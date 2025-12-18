@@ -2,22 +2,22 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * Clamp a number into the inclusive range [min, max].
+ * 将数字限制到包含范围 [min, max] 之间。
  */
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
 }
 
 /**
- * Return a random floating-point number in the range [min, max).
+ * 返回范围 [min, max) 内的随机浮点数。
  */
 function randomBetween(min, max) {
   return min + Math.random() * (max - min);
 }
 
 /**
- * Compute the squared distance from point P(px, py) to segment AB.
- * Using squared distance avoids an extra square root for performance.
+ * 计算点 P(px, py) 到线段 AB 的平方距离。
+ * 使用平方距离可以避免额外的开方运算以提高性能。
  */
 function distanceToSegmentSquared(px, py, ax, ay, bx, by) {
   const abx = bx - ax;
@@ -44,7 +44,7 @@ function segmentIntersectsCircle(ax, ay, bx, by, cx, cy, r) {
 }
 
 /**
- * Convert a pointer (client) position into canvas-local coordinates.
+ * 将指针（client）坐标转换为画布本地坐标。
  */
 function getCanvasPoint(canvas, clientX, clientY) {
   const rect = canvas.getBoundingClientRect();
@@ -93,7 +93,7 @@ export default function FruitGame() {
   );
 
   /**
-   * Resize the canvas to match its container and devicePixelRatio.
+   * 根据容器和 devicePixelRatio 调整画布大小。
    */
   function resizeCanvas() {
     const container = containerRef.current;
@@ -116,7 +116,7 @@ export default function FruitGame() {
   }
 
   /**
-   * Small helper to update multiple state slices with optional values.
+   * 一个小工具，用于根据可选值更新多个状态片段。
    */
   function setGameState({ nextRunning, nextGameOver, nextScore, nextLives }) {
     if (typeof nextRunning === 'boolean') setRunning(nextRunning);
@@ -126,7 +126,7 @@ export default function FruitGame() {
   }
 
   /**
-   * Reset all in-memory world entities and timers.
+   * 重置内存中的所有世界实体和计时器。
    */
   function resetWorld() {
     fruitsRef.current = [];
@@ -137,7 +137,7 @@ export default function FruitGame() {
   }
 
   /**
-   * Start (or restart) a new game.
+   * 开始（或重新开始）新游戏。
    */
   function startGame() {
     resetWorld();
@@ -148,7 +148,7 @@ export default function FruitGame() {
   }
 
   /**
-   * End the current game and switch UI into "Game Over" state.
+   * 结束当前游戏并切换到“游戏结束”状态。
    */
   const endGame = useCallback(() => {
     setRunning(false);
@@ -156,7 +156,7 @@ export default function FruitGame() {
   }, []);
 
   /**
-   * Spawn a fruit (or bomb) with randomized initial position and velocity.
+   * 生成一个水果（或炸弹），其初始位置和速度随机。
    */
   const spawnFruit = useCallback((now, width, height) => {
     const bombChance = clamp(0.09 + spawnRef.current.levelTime / 120000, 0.09, 0.18);
@@ -187,7 +187,7 @@ export default function FruitGame() {
   }, [fruitPalette]);
 
   /**
-   * Create a burst of particles at (x, y) for slice/bomb feedback.
+   * 在 (x, y) 处创建一波粒子，用于切割或炸弹反馈效果。
    */
   const addParticles = useCallback((x, y, color, amount) => {
     for (let i = 0; i < amount; i += 1) {
@@ -204,7 +204,7 @@ export default function FruitGame() {
   }, []);
 
   /**
-   * Handle a pointer swipe segment and apply slice logic against all fruits.
+   * 处理指针滑动线段，并对所有水果应用切割逻辑。
    */
   const handleSliceSegment = useCallback((ax, ay, bx, by) => {
     const fruits = fruitsRef.current;
@@ -243,7 +243,7 @@ export default function FruitGame() {
     if (!canvas) return undefined;
 
     /**
-     * Pointer down starts a swipe trail.
+     * 指针按下时开始记录滑动轨迹。
      */
     const onPointerDown = e => {
       canvas.setPointerCapture(e.pointerId);
@@ -257,7 +257,7 @@ export default function FruitGame() {
     };
 
     /**
-     * Pointer move updates trail segments and triggers slice checks when running.
+     * 指针移动时更新轨迹段，并在游戏运行时触发切割检测。
      */
     const onPointerMove = e => {
       if (!pointerRef.current.down) return;
@@ -285,7 +285,7 @@ export default function FruitGame() {
     };
 
     /**
-     * Pointer up cancels the current swipe.
+     * 指针抬起时取消当前滑动。
      */
     const onPointerUp = () => {
       pointerRef.current.down = false;
@@ -314,7 +314,7 @@ export default function FruitGame() {
     if (!ctx) return undefined;
 
     /**
-     * Paint the background and grid.
+     * 绘制背景和网格。
      */
     function drawBackground(width, height) {
       const gradient = ctx.createLinearGradient(0, 0, 0, height);
@@ -344,7 +344,7 @@ export default function FruitGame() {
     }
 
     /**
-     * Draw one fruit (or bomb) based on its current world state.
+     * 根据当前世界状态绘制一个水果（或炸弹）。
      */
     function drawFruit(fruit) {
       ctx.save();
@@ -392,7 +392,7 @@ export default function FruitGame() {
     }
 
     /**
-     * Draw all particles in the current frame.
+     * 绘制当前帧的所有粒子。
      */
     function drawParticles(particles) {
       for (const p of particles) {
@@ -407,7 +407,7 @@ export default function FruitGame() {
     }
 
     /**
-     * Draw recent swipe trail segments with fade-out.
+     * 绘制带淡出效果的近期滑动轨迹段。
      */
     function drawSlashes(now) {
       for (const s of slashesRef.current) {
@@ -427,7 +427,7 @@ export default function FruitGame() {
     }
 
     /**
-     * Per-frame update loop (spawn, simulate, render).
+     * 每帧更新循环（生成、模拟、渲染）。
      */
     function tick(now) {
       const width = canvasSize.width;

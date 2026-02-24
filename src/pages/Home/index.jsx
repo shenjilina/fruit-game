@@ -5,6 +5,7 @@ const MENU_ITEMS = [
   { to: '/about', label: 'About' },
   { to: '/fruit-game', label: 'Fruit Game' },
   { to: '/hand-tracker', label: 'Hand Tracker' },
+  { to: '/hand-fruit-game', label: 'Hand Fruit Game' },
 ];
 
 export default function Home() {

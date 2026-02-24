@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import Home from '@/pages/Home/index.jsx';
 import About from '@/pages/About/index.jsx';
 import FruitGame from '@/pages/FruitGame/index.jsx';
+import HandFruitGame from '@/pages/HandFruitGame/index.jsx';
 import HandTracker from '@/pages/HandTracker/index.jsx';
 import NotFound from '@/pages/NotFound/index.jsx';
 
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: '/fruit-game',
     element: <FruitGame />,
+  },
+  {
+    path: '/hand-fruit-game',
+    element: <HandFruitGame />,
   },
   {
     path: '/hand-tracker',

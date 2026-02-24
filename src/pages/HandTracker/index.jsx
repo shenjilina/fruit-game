@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import * as mpHands from '@mediapipe/hands';
 import * as mpCamera from '@mediapipe/camera_utils';
 
@@ -40,7 +40,7 @@ export default function HandTracker() {
     }
   }
   // 处理检测结果
-  function onResults(results) {
+  const onResults = useCallback((results) => {
     const canvasCtx = canvasRef.current?.getContext('2d');
     if (!canvasCtx || !videoRef.current) return;
 
@@ -81,7 +81,7 @@ export default function HandTracker() {
     }
 
     canvasCtx.restore();
-  }
+  }, []);
   useEffect(() => {
     // 初始化 MediaPipe Hands
     const hands = new mpHands.Hands({
@@ -118,7 +118,7 @@ export default function HandTracker() {
     return () => {
       if (handsRef.current) handsRef.current.close();
     };
-  }, []);
+  }, [onResults]);
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
